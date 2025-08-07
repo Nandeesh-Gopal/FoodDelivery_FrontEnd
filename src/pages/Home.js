@@ -1,5 +1,5 @@
-import React from "react";
-
+import './Home.css';
+import { Link } from "react-router-dom";
 function Home() {
   return (
     <div>
@@ -51,7 +51,7 @@ function Home() {
         <div className="sub-cont">
           <img src="assets/hotel1.webp" alt="Basha Biriyani" />
           <p>Basha Biriyani</p>
-          <center><a href="items.html"><button>Order now</button></a></center>
+          <center><Link to="/items"><button>Order now</button></Link></center>
         </div>
         <div className="sub-cont">
           <img src="assets/hotel6.avif" alt="Annapoorna" />
