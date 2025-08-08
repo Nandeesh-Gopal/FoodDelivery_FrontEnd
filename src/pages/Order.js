@@ -1,15 +1,53 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
+import { Link } from "react-router-dom";
 function Order(){
+    const [order,setorder]=useState([])
+    useEffect(()=>{
+        const storeditem=localStorage.getItem("arr")
+        if(storeditem){
+            setorder(JSON.parse(storeditem))
+        }
+    },[])
+    const total =order.reduce((sum,item)=>sum+item.total,0)
     return (
         <body>
         <nav className="nav-bar">
             <h1>Food Delivery</h1>
             <div className="nav1">
                 <a href="signup.html">Sign Up</a>
-                <a href="index.html">home</a>
+                <Link to="/">Home</Link>
             </div>
         </nav>
         <h1>Order Summary</h1>
+        { 
+            order.length===0 ?
+                <p>No items Selected</p>
+            
+            :
+                <table>
+                <thead><tr><th>Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th></tr></thead>
+                    <tbody>
+                        {
+                            order.map((item,index)=>(
+                                <tr key={index}>
+                                    <td>{item.name}</td>
+                                    <td>{item.quantity}</td>
+                                    <td>{item.price}</td>
+                                    <td>{item.total}</td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                    
+
+                </table>
+            }
+        {
+            order.length > 0 && (<h2>total : {total}</h2>)
+        }
         <div style={{display: "flex",flexDirection:"column",gap: "20px",paddingTop: "20px",alignItems: "center"}} id="ordersumm">
        
         <div style={{display: "flex",flexDirection: "column",gap: "30px"}}>

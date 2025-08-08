@@ -106,7 +106,8 @@
 .sub-cont-items input{
     width: 60px;
     height: 20px;
-    padding-right: 30px;
+    padding-right: 0px;
+    margin-right: 10px;
     border: 0px;
 }
 .container-items{

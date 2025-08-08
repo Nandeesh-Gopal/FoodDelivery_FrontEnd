@@ -1,12 +1,35 @@
-import React from "react";
+import './items.css';
+import { useNavigate,Link} from 'react-router-dom';
 function Items(){
+    const nav=useNavigate();
+    const handle =()=>{
+        const inputs = document.querySelectorAll("input")
+        const arr=[];
+        inputs.forEach(item=>{
+            const name =item.getAttribute("data-name")
+            const quantity =parseInt(item.value)
+            const price =parseInt(item.getAttribute("data-price"))
+            if(quantity>0){
+                arr.push({
+                    name,
+                    quantity,
+                    price,
+                    total: quantity*price
+                })
+            }
+        }
+        )
+        localStorage.setItem("arr",JSON.stringify(arr))
+        nav("/order")
+    
+    }
     return(
         <div>
     <nav className="nav-bar">
             <h1>Food Delivery</h1>
             <div className="nav1">
-                <a href="signup.html">Sign Up</a>
-                <a href="index.html">home</a>
+          <Link to="/signup">Sign Up</Link>
+                <Link to="/">Home</Link>
             </div>
     </nav>
     <h1 style={{color: "orangered",padding: "50px"}}>Select items</h1>
@@ -19,7 +42,7 @@ function Items(){
             <h6>Indian recipe</h6></div></div>
             <div style={{display:"flex",alignItems:"center",gap:"30px"}}>
             <p>30₹</p>
-            <input type="number" min="0" value="1" data-name="Roti"data-price="30"/></div>
+            <input type="number" min="0" defaultValue="0" data-name="Roti"data-price="30"/></div>
         </div>
         <div className="sub-cont-items">
             <div style={{display:"flex",alignItems:"center",gap:"30px"}}>
@@ -29,7 +52,7 @@ function Items(){
             <h6>Indian recipe</h6></div></div>
             <div style={{display:"flex",alignItems:"center",gap:"30px"}}>
             <p>20₹</p>
-            <input type="number" min="0" value="1" data-name="Idli"data-price="20"/></div>
+            <input type="number" min="0" defaultValue="0" data-name="Idli"data-price="20"/></div>
         </div>
         <div className="sub-cont-items">
             <div style={{display:"flex",alignItems:"center",gap:"30px"}}>
@@ -39,7 +62,7 @@ function Items(){
             <h6>Indian recipe</h6></div></div>
             <div style={{display:"flex",alignItems:"center",gap:"30px"}}>
             <p>30₹</p>
-            <input type="number" min="0" value="0" data-name="Dosa" data-price="30"/></div>
+            <input type="number" min="0" defaultValue="0" data-name="Dosa" data-price="30"/></div>
         </div>
         <div className="sub-cont-items">
             <div style={{display:"flex",alignItems:"center",gap:"30px"}}>
@@ -49,7 +72,7 @@ function Items(){
             <h6>Indian recipe</h6></div></div>
             <div style={{display:"flex",alignItems:"center",gap:"30px"}}>
             <p>240₹</p>
-            <input type="number" min="0" value="0" data-name="Mutton-gravy"data-price="240"/></div>
+            <input type="number" min="0" defaultValue="0" data-name="Mutton-gravy"data-price="240"/></div>
         </div>
         <div className="sub-cont-items">
             <div style={{display:"flex",alignItems:"center",gap:"30px"}}>
@@ -59,15 +82,15 @@ function Items(){
             <h6>Indian recipe</h6></div></div>
             <div style={{display:"flex",alignItems:"center",gap:"30px"}}>
             <p>40₹</p>
-            <input type="number" min="0" value="0" data-name="parotta" data-price="40"/></div>
+            <input type="number" min="3" defaultValue="0" data-name="parotta" data-price="40"/></div>
         </div>
     </div>
     <br/>
-    <center><a href="order.html"><button className="buy_button">Proceed to Buy</button></a></center>
+    <center><button className="buy_button" onClick={handle}>Proceed to Buy</button></center>
     
     <footer className="footer">
             <div className="social">
-            <p style={{color:"left",paddingLeft:"20px"}}>Follow Us On</p>
+            <p style={{color:"white",paddingLeft:"20px"}}>Follow Us On</p>
             <img src="assets/icons/facebook.png" alt="i"/>
             <img src="assets/icons/linkedin.png" alt="i"/>
             <img src="assets/icons/social(1).png" alt="i"/>

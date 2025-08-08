@@ -6,8 +6,8 @@ function Home() {
       <nav className="nav-bar">
         <h1>Food Delivery</h1>
         <div className="nav1">
-          <a href="signup.html">Sign Up</a>
-          <a href="login.html" id="login-button">Login</a>
+          <Link to="/signup">Sign Up</Link>
+          <Link to="/login">Login</Link>
         </div>
       </nav>
 
@@ -56,27 +56,27 @@ function Home() {
         <div className="sub-cont">
           <img src="assets/hotel6.avif" alt="Annapoorna" />
           <p>Annapoorna</p>
-          <center><a href="items.html"><button>Order now</button></a></center>
+          <center><Link to="/items"><button>Order now</button></Link></center>
         </div>
         <div className="sub-cont">
           <img src="assets/hotel7.avif" alt="Anandhaas" />
           <p>Anandhaas</p>
-          <center><a href="items.html"><button>Order now</button></a></center>
+          <center><Link to="/items"><button>Order now</button></Link></center>
         </div>
         <div className="sub-cont">
           <img src="assets/hotel4.jpg" alt="A2B" />
           <p>A2B</p>
-          <center><a href="items.html"><button>Order now</button></a></center>
+          <center><Link to="/items"><button>Order now</button></Link></center>
         </div>
         <div className="sub-cont">
           <img src="assets/hotel5.jpg" alt="KFC" />
           <p>KFC</p>
-          <center><a href="items.html"><button>Order now</button></a></center>
+          <center><Link to="/items"><button>Order now</button></Link></center>
         </div>
         <div className="sub-cont">
           <img src="assets/hotel2.webp" alt="Chai Kings" />
           <p>Chai Kings</p>
-          <center><a href="items.html"><button>Order now</button></a></center>
+          <center><Link to="/items"><button>Order now</button></Link></center>
         </div>
       </div>
 

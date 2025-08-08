@@ -1,12 +1,12 @@
-import React  from "react";
+import { Link } from "react-router-dom";
 function Login(){
     return(
          <body>
         <nav className="nav-bar">
             <h1 style={{color: "white"}}>Food Delivery</h1>
             <div className="nav1">
-                <a href="signup.html">Sign Up</a>
-                <a href="index.html">home</a>
+          <Link to="/signup">Sign Up</Link>
+                <Link to="/">Home</Link>
             </div>
         </nav>
         <div className="container">

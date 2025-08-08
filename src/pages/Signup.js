@@ -1,12 +1,12 @@
-import React from "react";
+import { Link } from "react-router-dom";
 function Signup(){
     return(
         <body>
         <nav class="nav-bar">
             <h1>Food Delivery</h1>
             <div class="nav1">
-                <a href="signup.html">Sign Up</a>
-                <a href="login.html">Login</a>
+                <Link to="/">Home</Link>
+          <Link to="/login">Login</Link>
             </div>
         </nav>
         <div className="container" style={{paddingTop:"10%", paddingBottom: "10%"}}>
