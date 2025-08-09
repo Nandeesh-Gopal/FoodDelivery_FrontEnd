@@ -14,11 +14,11 @@ function Login(){
             <h1>LOGIN</h1>
             <form action="/login" method="POST" style={{display: "flex",gap: "20px",flexDirection:"column"}}>
             <div>
-                <label for="mail">Enter your email</label>
+                <label htmlFor="mail">Enter your email</label>
                 <input type="email" id="mail" name="email"/>
             </div>
             <div>
-                <label for="password">Enter your password</label>
+                <label htmlFor="password">Enter your password</label>
                 <input type="password" id="password" name="password"/>
             </div>
             <center>

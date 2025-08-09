@@ -10,7 +10,7 @@ function Order(){
     },[])
     const total =order.reduce((sum,item)=>sum+item.total,0)
     return (
-        <body>
+        <div>
         <nav className="nav-bar">
             <h1>Food Delivery</h1>
             <div className="nav1">
@@ -51,13 +51,13 @@ function Order(){
         <div style={{display: "flex",flexDirection:"column",gap: "20px",paddingTop: "20px",alignItems: "center"}} id="ordersumm">
        
         <div style={{display: "flex",flexDirection: "column",gap: "30px"}}>
-        <label for="Address">Enter your Location</label>
+        <label htmlFor="Address">Enter your Location</label>
         <textarea name="Address" id="Address"></textarea>
-        <label for="no" >Enter your Mobile number</label>
-        <input type="number" placeholder="9999988888"/>
-        <label for="payment">Payment Method</label>
-        <label for="cod"><input type="radio" id="cod"value="cod"/> Cash On Delivery</label>
-        <label for="cod"><input type="radio" id="cod"value="upi"/> UPI</label>
+        <label htmlFor="no" >Enter your Mobile number</label>
+        <input htmlFor="number" placeholder="9999988888"/>
+        <label htmlFor="payment">Payment Method</label>
+        <label htmlFor="cod"><input type="radio" id="cod"value="cod"/> Cash On Delivery</label>
+        <label htmlFor="upi"><input type="radio" id="upi"value="upi"/> UPI</label>
 
         <button className="buy ">Proceed to buy</button>
     </div></div>
@@ -87,7 +87,7 @@ function Order(){
             <img src="assets/icons/social.png" alt="i"/>
             </div>
         </footer>
-    </body>
+    </div>
     );
 }
 export default Order;
