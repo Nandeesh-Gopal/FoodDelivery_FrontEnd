@@ -1,5 +1,6 @@
 import './Home.css';
 import { Link } from "react-router-dom";
+import Logout from './Logout';
 function Home() {
   return (
     <div>
@@ -8,6 +9,7 @@ function Home() {
         <div className="nav1">
           <Link to="/signup">Sign Up</Link>
           <Link to="/login">Login</Link>
+          <Logout/> 
         </div>
       </nav>
 

@@ -1,7 +1,29 @@
-import { Link } from "react-router-dom";
+import { Link,useNavigate} from "react-router-dom";
+import { useState } from "react";
 function Login(){
+    const [password,setPassword]=useState("")
+    const [email,setEmail]=useState("")
+    const [err,setErr]=useState("")
+    const navi=useNavigate();
+    const handle =async (e)=>{
+        e.preventDefault()
+        const Response=await fetch("http://localhost:5000/login",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({email,password})
+        })
+        if(Response.ok){
+            navi("/")
+        }
+        else{
+            const data=await Response.json()
+            setErr(data.message)
+        }
+    }
     return(
-         <body>
+         <div>
         <nav className="nav-bar">
             <h1 style={{color: "white"}}>Food Delivery</h1>
             <div className="nav1">
@@ -12,17 +34,18 @@ function Login(){
         <div className="container">
             <div className="container1" >
             <h1>LOGIN</h1>
-            <form action="/login" method="POST" style={{display: "flex",gap: "20px",flexDirection:"column"}}>
+            <form onSubmit={handle} style={{display: "flex",gap: "20px",flexDirection:"column"}}>
             <div>
                 <label htmlFor="mail">Enter your email</label>
-                <input type="email" id="mail" name="email"/>
+                <input type="email" id="mail" name="email" value={email} onChange={(e)=>setEmail(e.target.value)}/>
             </div>
             <div>
                 <label htmlFor="password">Enter your password</label>
-                <input type="password" id="password" name="password"/>
+                <input type="password" id="password" name="password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
             </div>
             <center>
             <button type="submit">login</button></center>
+            {err && <p>{err}</p>}
             <p id="mess"></p>
         </form>
             </div>
@@ -36,7 +59,7 @@ function Login(){
             <img src="assets/icons/social.png" alt="i"/>
             </div>
         </footer>
-    </body>
+    </div>
     );
 }
 export default Login;
