@@ -1,13 +1,25 @@
 import React,{useState,useEffect} from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 function Order(){
+    const nav=useNavigate()
     const [order,setorder]=useState([])
     useEffect(()=>{
+        const checkAuth=async () => {
+            const res= await fetch("http://localhost:5000/checkAuth",{
+                credentials:"include"
+        })
+        const data=await res.json()
+        if(!data.loggedIn){
+            nav("/login")
+        }
+        }
+        checkAuth();
         const storeditem=localStorage.getItem("arr")
         if(storeditem){
             setorder(JSON.parse(storeditem))
         }
-    },[])
+    },[nav])
     const total =order.reduce((sum,item)=>sum+item.total,0)
     return (
         <div>
@@ -51,15 +63,16 @@ function Order(){
         <div style={{display: "flex",flexDirection:"column",gap: "20px",paddingTop: "20px",alignItems: "center"}} id="ordersumm">
        
         <div style={{display: "flex",flexDirection: "column",gap: "30px"}}>
+            <form>
         <label htmlFor="Address">Enter your Location</label>
         <textarea name="Address" id="Address"></textarea>
         <label htmlFor="no" >Enter your Mobile number</label>
         <input htmlFor="number" placeholder="9999988888"/>
         <label htmlFor="payment">Payment Method</label>
-        <label htmlFor="cod"><input type="radio" id="cod"value="cod"/> Cash On Delivery</label>
-        <label htmlFor="upi"><input type="radio" id="upi"value="upi"/> UPI</label>
+        <label htmlFor="cod"><input type="radio" id="cod" name="payment"value="cod"/> Cash On Delivery</label>
+        <label htmlFor="upi"><input type="radio" id="upi" name="payment"value="upi"/> UPI</label>
 
-        <button className="buy ">Proceed to buy</button>
+        <button className="buy ">Proceed to buy</button></form>
     </div></div>
     {/*
     <script>

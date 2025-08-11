@@ -14,7 +14,7 @@ function Logout(){
         }
     }
     return(
-        <button onClick={handle}>logout</button>
+        <a onClick={handle}>logout</a>
     )
 }
 export default Logout;

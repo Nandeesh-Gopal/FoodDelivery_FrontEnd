@@ -2,14 +2,20 @@ import './Home.css';
 import { Link } from "react-router-dom";
 import Logout from './Logout';
 function Home() {
+//  const isloggedin=Boolean(localStorage.getItem("token"))
   return (
     <div>
       <nav className="nav-bar">
         <h1>Food Delivery</h1>
         <div className="nav1">
-          <Link to="/signup">Sign Up</Link>
-          <Link to="/login">Login</Link>
-          <Logout/> 
+            {!localStorage.getItem("token") && (
+    <>
+      <Link to="/signup">Sign Up</Link>
+      <Link to="/login">Login</Link>
+    </>
+  )}
+
+  {localStorage.getItem("token") && <Logout />}
         </div>
       </nav>
 
