@@ -1,5 +1,6 @@
 import { Link,useNavigate} from "react-router-dom";
 import { useState } from "react";
+import './login.css'
 function Login(){
     const [password,setPassword]=useState("")
     const [email,setEmail]=useState("")
@@ -24,7 +25,7 @@ function Login(){
         }
     }
     return(
-         <div>
+         <div className="body">
         <nav className="nav-bar">
             <h1 style={{color: "white"}}>Food Delivery</h1>
             <div className="nav1">
@@ -51,7 +52,7 @@ function Login(){
         </form>
             </div>
         </div>
-        <footer className="footer">
+        <footer className="footer_login">
             <div className="social">
             <p style={{color:"white",paddingLeft: "20px"}}>Follow Us On</p>
             <img src="assets/icons/facebook.png" alt="i"/>

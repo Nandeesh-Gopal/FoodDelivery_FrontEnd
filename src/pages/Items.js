@@ -1,5 +1,6 @@
 import './items.css';
 import { useNavigate,Link} from 'react-router-dom';
+import Logout from './Logout';
 function Items(){
     const nav=useNavigate();
     const handle =()=>{
@@ -28,8 +29,8 @@ function Items(){
     <nav className="nav-bar">
             <h1>Food Delivery</h1>
             <div className="nav1">
-          <Link to="/signup">Sign Up</Link>
-                <Link to="/">Home</Link>
+          <Link to="/">Home</Link>
+                <Logout/>
             </div>
     </nav>
     <h1 style={{color: "orangered",padding: "50px"}}>Select items</h1>

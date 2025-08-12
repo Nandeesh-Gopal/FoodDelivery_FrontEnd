@@ -1,0 +1,27 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container_signup {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.container1_signup {
+  background-color: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0px 10px rgb(255, 77, 0);
+}
+
+.footer_signup {
+  height: 100px;
+  background-color: orangered;
+  display: flex;
+  align-items: center;
+}

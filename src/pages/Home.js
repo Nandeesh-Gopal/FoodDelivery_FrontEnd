@@ -1,21 +1,33 @@
 import './Home.css';
 import { Link } from "react-router-dom";
 import Logout from './Logout';
+import React,{useEffect,useState} from 'react';
 function Home() {
-//  const isloggedin=Boolean(localStorage.getItem("token"))
+  const [isloggedin,setIsLoggedIn]=useState(false)
+  useEffect(() => {
+        fetch("http://localhost:5000/check-session", {
+            method: "GET",
+            credentials: "include" 
+        })
+        .then(res => res.json())
+        .then(data => {
+            setIsLoggedIn(data.active);
+        })
+        .catch(err => console.error(err));
+    }, []);
   return (
     <div>
       <nav className="nav-bar">
         <h1>Food Delivery</h1>
         <div className="nav1">
-            {!localStorage.getItem("token") && (
-    <>
-      <Link to="/signup">Sign Up</Link>
-      <Link to="/login">Login</Link>
-    </>
-  )}
-
-  {localStorage.getItem("token") && <Logout />}
+          {!isloggedin ? (
+            <>
+              <Link to="/signup">Sign Up</Link>
+              <Link to="/login">Login</Link>
+            </>
+          ) : (
+            <Logout />
+          )}
         </div>
       </nav>
 

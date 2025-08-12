@@ -1,18 +1,28 @@
 import React,{useState,useEffect} from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Logout from "./Logout";
+import Home from "./Home";
+
 function Order(){
     const nav=useNavigate()
     const [order,setorder]=useState([])
+    const [formData, setFormData] = useState({
+        address: '',
+        phoneNo: '',
+        payment: ''
+    })
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    
     useEffect(()=>{
         const checkAuth=async () => {
             const res= await fetch("http://localhost:5000/checkAuth",{
                 credentials:"include"
-        })
-        const data=await res.json()
-        if(!data.loggedIn){
-            nav("/login")
-        }
+            })
+            const data=await res.json()
+            if(!data.loggedIn){
+                nav("/login")
+            }
         }
         checkAuth();
         const storeditem=localStorage.getItem("arr")
@@ -20,87 +30,185 @@ function Order(){
             setorder(JSON.parse(storeditem))
         }
     },[nav])
-    const total =order.reduce((sum,item)=>sum+item.total,0)
-    return (
-        <div>
-        <nav className="nav-bar">
-            <h1>Food Delivery</h1>
-            <div className="nav1">
-                <a href="signup.html">Sign Up</a>
-                <Link to="/">Home</Link>
-            </div>
-        </nav>
-        <h1>Order Summary</h1>
-        { 
-            order.length===0 ?
-                <p>No items Selected</p>
-            
-            :
-                <table>
-                <thead><tr><th>Name</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Total</th></tr></thead>
-                    <tbody>
-                        {
-                            order.map((item,index)=>(
-                                <tr key={index}>
-                                    <td>{item.name}</td>
-                                    <td>{item.quantity}</td>
-                                    <td>{item.price}</td>
-                                    <td>{item.total}</td>
-                                </tr>
-                            ))
-                        }
-                    </tbody>
-                    
 
-                </table>
-            }
-        {
-            order.length > 0 && (<h2>total : {total}</h2>)
+    const handleInputChange = (e) => {
+        const { name, value } = e.target
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }))
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        setIsSubmitting(true)
+        
+        if (!formData.address || !formData.phoneNo || !formData.payment) {
+            alert('Please fill all fields')
+            setIsSubmitting(false)
+            return
         }
-        <div style={{display: "flex",flexDirection:"column",gap: "20px",paddingTop: "20px",alignItems: "center"}} id="ordersumm">
-       
-        <div style={{display: "flex",flexDirection: "column",gap: "30px"}}>
-            <form>
-        <label htmlFor="Address">Enter your Location</label>
-        <textarea name="Address" id="Address"></textarea>
-        <label htmlFor="no" >Enter your Mobile number</label>
-        <input htmlFor="number" placeholder="9999988888"/>
-        <label htmlFor="payment">Payment Method</label>
-        <label htmlFor="cod"><input type="radio" id="cod" name="payment"value="cod"/> Cash On Delivery</label>
-        <label htmlFor="upi"><input type="radio" id="upi" name="payment"value="upi"/> UPI</label>
 
-        <button className="buy ">Proceed to buy</button></form>
-    </div></div>
-    {/*
-    <script>
-        const items = JSON.parse(localStorage.getItem("orderData"));
-        const summaryDiv = document.getElementById("ordersumm");
-        let total = 0;
+        if (order.length === 0) {
+            alert('No items in cart')
+            setIsSubmitting(false)
+            return
+        }
 
-        items.forEach(element => {
-            const itemTotal = element.price * element.quantity;
-            total += itemTotal;
+        try {
+            const orderData = {
+                location: formData.address,
+                phoneNo: formData.phoneNo,
+                payment: formData.payment,
+                items: order,
+                total: total
+            }
 
-            summaryDiv.innerHTML += `
-                <p>${element.name} - ₹${element.price} * ${element.quantity} = ₹${itemTotal}</p>
-            `;
-        });
+            const response = await fetch('http://localhost:5000/place-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify(orderData)
+            })
 
-        document.getElementById("total").innerText = `Total: ₹${total}`;
-    </script>*/}
-    <footer className="footer">
-            <div className="social">
-            <p style={{color:"white",paddingLeft: "20px"}}>Follow Us On</p>
-            <img src="assets/icons/facebook.png" alt="i"/>
-            <img src="assets/icons/linkedin.png" alt="i"/>
-            <img src="assets/icons/social(1).png" alt="i"/>
-            <img src="assets/icons/social.png" alt="i"/>
+            const data = await response.json()
+
+            if (response.ok) {
+                alert('Order placed successfully!')
+                localStorage.removeItem('arr')
+                setorder([])
+                setFormData({
+                    address: '',
+                    phoneNo: '',
+                    payment: ''
+                })
+            } else {
+                alert(data.message || 'Failed to place order')
+            }
+        } catch (error) {
+            console.error('Error placing order:', error)
+            alert('Error placing order. Please try again.')
+        } finally {
+            setIsSubmitting(false)
+        }
+    }
+
+    const total = order.reduce((sum,item)=>sum+item.total,0)
+    
+    return (
+        <div style={{display:"flex",flexDirection:"column",alignItems:"space-between"}}>
+            <nav className="nav-bar">
+                <h1>Food Delivery</h1>
+                <div className="nav1">
+                    <Link to="/">Home</Link>
+                    <Logout/>
+                </div>
+            </nav>
+            <h1>Order Summary</h1>
+            { 
+                order.length===0 ?
+                    <p>No items Selected</p>
+                :
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                order.map((item,index)=>(
+                                    <tr key={index}>
+                                        <td>{item.name}</td>
+                                        <td>{item.quantity}</td>
+                                        <td>{item.price}</td>
+                                        <td>{item.total}</td>
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table>
+            }
+            {
+                order.length > 0 && (<h2>Total: ₹{total}</h2>)
+            }
+            <div style={{display: "flex",flexDirection:"column",gap: "20px",paddingTop: "20px",alignItems: "center"}} id="ordersumm">
+                <div style={{display: "flex",flexDirection: "column",gap: "30px"}}>
+                    <form style={{display: "flex",flexDirection: "column",gap: "30px"}} onSubmit={handleSubmit}>
+                        <label htmlFor="address">Enter your Location</label>
+                        <textarea 
+                            name="address" 
+                            id="address"
+                            value={formData.address}
+                            onChange={handleInputChange}
+                            required
+                        />
+                        
+                        <label htmlFor="phoneNo">Enter your Mobile number</label>
+                        <input 
+                            type="tel" 
+                            name="phoneNo" 
+                            id="phoneNo"
+                            placeholder="9999988888"
+                            value={formData.phoneNo}
+                            onChange={handleInputChange}
+                            pattern="[0-9]{10}"
+                            required
+                        />
+                        
+                        <label>Payment Method</label>
+                        <label htmlFor="cod">
+                            <input 
+                                type="radio" 
+                                id="cod" 
+                                name="payment"
+                                value="cod"
+                                checked={formData.payment === 'cod'}
+                                onChange={handleInputChange}
+                                required
+                            /> 
+                            Cash On Delivery
+                        </label>
+                        <label htmlFor="upi">
+                            <input 
+                                type="radio" 
+                                id="upi" 
+                                name="payment"
+                                value="upi"
+                                checked={formData.payment === 'upi'}
+                                onChange={handleInputChange}
+                                required
+                            /> 
+                            UPI
+                        </label>
+
+                        <button 
+                            type="submit" 
+                            className="buy"
+                            disabled={isSubmitting || order.length === 0}
+                        >
+                            {isSubmitting ? 'Processing...' : 'Proceed to buy'}
+                        </button>
+                    </form>
+                </div>
             </div>
-        </footer>
-    </div>
+            
+            <footer className="footer">
+                <div className="social">
+                    <p style={{color:"white",paddingLeft: "20px"}}>Follow Us On</p>
+                    <img src="assets/icons/facebook.png" alt="facebook"/>
+                    <img src="assets/icons/linkedin.png" alt="linkedin"/>
+                    <img src="assets/icons/social(1).png" alt="social"/>
+                    <img src="assets/icons/social.png" alt="social"/>
+                </div>
+            </footer>
+        </div>
     );
 }
+
 export default Order;

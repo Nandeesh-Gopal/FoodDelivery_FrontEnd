@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-
+import './signup.css'
 function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -34,7 +34,7 @@ function Signup() {
   };
 
   return (
-    <div>
+    <div className="body">
       <nav className="nav-bar">
         <h1>Food Delivery</h1>
         <div className="nav1">
@@ -42,12 +42,12 @@ function Signup() {
           <Link to="/login">Login</Link>
         </div>
       </nav>
-      <div className="container" style={{ paddingTop: "10%", paddingBottom: "10%" }}>
-        <div className="container1">
+      <div className="container_signup">
+        <div className="container1_signup">
           <h1>SIGN UP</h1>
-          <form onSubmit={handle} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          <form onSubmit={handle} style={{display:"flex",flexDirection:"column",gap:"10px"}}>
             <div>
-              <label htmlFor="username">Enter your Name</label>
+              <label htmlFor="username">Enter your Name</label><br/>
               <input
                 type="text"
                 id="username"
@@ -57,7 +57,7 @@ function Signup() {
               />
             </div>
             <div>
-              <label htmlFor="mail">Enter your email</label>
+              <label htmlFor="mail">Enter your email</label><br/>
               <input
                 type="email"
                 id="mail"
@@ -69,7 +69,7 @@ function Signup() {
               {errors.email && <p>{errors.email}</p>}
             </div>
             <div>
-              <label htmlFor="password">Enter your password</label>
+              <label htmlFor="password">Enter your password</label><br/>
               <input
                 type="password"
                 id="password"
@@ -80,13 +80,11 @@ function Signup() {
               />
               {errors.password && <p>{errors.password}</p>}
             </div>
-            <center>
               <button type="submit">Submit</button>
-            </center>
           </form>
         </div>
       </div>
-      <footer className="footer">
+      <footer className="footer_signup">
         <div className="social">
           <p style={{ color: "white", paddingLeft: "20px" }}>Follow Us On</p>
           <img src="assets/icons/facebook.png" alt="facebook" />
