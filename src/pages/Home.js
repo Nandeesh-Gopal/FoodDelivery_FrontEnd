@@ -14,6 +14,7 @@ function Home() {
             setIsLoggedIn(data.active);
         })
         .catch(err => console.error(err));
+        
     }, []);
   return (
     <div>

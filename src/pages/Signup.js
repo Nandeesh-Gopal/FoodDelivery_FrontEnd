@@ -18,13 +18,18 @@ function Signup() {
       nerrors.password = "Password must contain at least 6 characters";
     }
     setErrors(nerrors);
-
+    
     if (Object.keys(nerrors).length === 0) {
-      await fetch("http://localhost:5000/signup", {
+      const res=await fetch("http://localhost:5000/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
       });
+      const data =await res.json()
+    if(!res.ok){
+      setErrors({email:data.message})
+      return
+    }
       alert("Form submitted successfully");
       setName("");
       setEmail("");
