@@ -27,7 +27,7 @@ function Home() {
         <div className="nav1">
           {!isloggedin ? (
             <>
-              <Link to="/signup">Sign Up</Link>
+              <Link to="/signup">sign Up</Link>
               <Link to="/login">Login</Link>
             </>
           ) : (
