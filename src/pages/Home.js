@@ -4,6 +4,7 @@ import Logout from './Logout';
 import React,{useEffect,useState} from 'react';
 function Home() {
   const [isloggedin,setIsLoggedIn]=useState(false)
+  const [hotels, setHotels] = useState([]);
   useEffect(() => {
         fetch("http://localhost:5000/check-session", {
             method: "GET",
@@ -14,7 +15,10 @@ function Home() {
             setIsLoggedIn(data.active);
         })
         .catch(err => console.error(err));
-        
+        fetch("http://localhost:5000/api/hotels")
+      .then(res => res.json())
+      .then(data => setHotels(data))
+      .catch(err => console.error(err));
     }, []);
   return (
     <div>
@@ -69,36 +73,13 @@ function Home() {
       </center>
 
       <div className="cont">
-        <div className="sub-cont">
-          <img src="assets/hotel1.webp" alt="Basha Biriyani" />
-          <p>Basha Biriyani</p>
-          <center><Link to="/items"><button>Order now</button></Link></center>
-        </div>
-        <div className="sub-cont">
-          <img src="assets/hotel6.avif" alt="Annapoorna" />
-          <p>Annapoorna</p>
-          <center><Link to="/items"><button>Order now</button></Link></center>
-        </div>
-        <div className="sub-cont">
-          <img src="assets/hotel7.avif" alt="Anandhaas" />
-          <p>Anandhaas</p>
-          <center><Link to="/items"><button>Order now</button></Link></center>
-        </div>
-        <div className="sub-cont">
-          <img src="assets/hotel4.jpg" alt="A2B" />
-          <p>A2B</p>
-          <center><Link to="/items"><button>Order now</button></Link></center>
-        </div>
-        <div className="sub-cont">
-          <img src="assets/hotel5.jpg" alt="KFC" />
-          <p>KFC</p>
-          <center><Link to="/items"><button>Order now</button></Link></center>
-        </div>
-        <div className="sub-cont">
-          <img src="assets/hotel2.webp" alt="Chai Kings" />
-          <p>Chai Kings</p>
-          <center><Link to="/items"><button>Order now</button></Link></center>
-        </div>
+        {hotels.map(hotel => (
+          <div className="sub-cont" key={hotel._id}>
+            <img src={hotel.image} alt={hotel.name} />
+            <p>{hotel.name}</p>
+            <center><Link to="/items"><button>Order now</button></Link></center>
+          </div>
+        ))}
       </div>
 
       <footer className="footer">
