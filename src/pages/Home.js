@@ -15,7 +15,7 @@ function Home() {
             setIsLoggedIn(data.active);
         })
         .catch(err => console.error(err));
-        fetch("http://localhost:5000/api/hotels")
+fetch("http://localhost:5000/api/hotels")
       .then(res => res.json())
       .then(data => setHotels(data))
       .catch(err => console.error(err));
@@ -77,7 +77,7 @@ function Home() {
           <div className="sub-cont" key={hotel._id}>
             <img src={hotel.image} alt={hotel.name} />
             <p>{hotel.name}</p>
-            <center><Link to="/items"><button>Order now</button></Link></center>
+            <center><Link to={`/items/${hotel._id}`}><button>Order now</button></Link></center>
           </div>
         ))}
       </div>
