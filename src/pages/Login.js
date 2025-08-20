@@ -8,15 +8,16 @@ function Login(){
     const navi=useNavigate();
     const handle =async (e)=>{
         e.preventDefault()
-        const Response=await fetch("http://localhost:5000/login",{
+const Response = await fetch("http://localhost:5000/api/auth/login", {
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
             },
-            credentials:"include",
             body:JSON.stringify({email,password})
         })
         if(Response.ok){
+            const data = await Response.json();
+            localStorage.setItem("token", data.token);
             navi("/")
         }
         else{

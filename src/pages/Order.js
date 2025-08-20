@@ -64,7 +64,7 @@ function Order(){
                 total: total
             }
 
-            const response = await fetch('http://localhost:5000/place-order', {
+const response = await fetch("http://localhost:5000/api/orders/place-order", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

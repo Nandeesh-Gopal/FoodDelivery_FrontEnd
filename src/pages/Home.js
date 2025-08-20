@@ -3,29 +3,41 @@ import { Link } from "react-router-dom";
 import Logout from './Logout';
 import React,{useEffect,useState} from 'react';
 function Home() {
-  const [isloggedin,setIsLoggedIn]=useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [hotels, setHotels] = useState([]);
+
   useEffect(() => {
-        fetch("http://localhost:5000/check-session", {
-            method: "GET",
-            credentials: "include" 
-        })
+    // get token from localStorage
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      fetch("http://localhost:5000/api/auth/check-session", {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,  // attach token
+        },
+      })
         .then(res => res.json())
         .then(data => {
-            setIsLoggedIn(data.active);
+          setIsLoggedIn(data.active);
         })
         .catch(err => console.error(err));
-fetch("http://localhost:5000/api/hotels")
+    } else {
+      setIsLoggedIn(false);
+    }
+
+    // fetch hotels (no auth required)
+    fetch("http://localhost:5000/api/hotels")
       .then(res => res.json())
       .then(data => setHotels(data))
       .catch(err => console.error(err));
-    }, []);
+  }, []);
   return (
     <div>
       <nav className="nav-bar">
         <h1>Food Delivery</h1>
         <div className="nav1">
-          {!isloggedin ? (
+          {!isLoggedIn ? (
             <>
               <Link to="/signup">sign Up</Link>
               <Link to="/login">Login</Link>
