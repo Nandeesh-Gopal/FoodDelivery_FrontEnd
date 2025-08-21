@@ -7,14 +7,13 @@ function Home() {
   const [hotels, setHotels] = useState([]);
 
   useEffect(() => {
-    // get token from localStorage
     const token = localStorage.getItem("token");
 
     if (token) {
       fetch("http://localhost:5000/api/auth/check-session", {
         method: "GET",
         headers: {
-          "Authorization": `Bearer ${token}`,  // attach token
+          "Authorization": `Bearer ${token}`,
         },
       })
         .then(res => res.json())
@@ -25,8 +24,6 @@ function Home() {
     } else {
       setIsLoggedIn(false);
     }
-
-    // fetch hotels (no auth required)
     fetch("http://localhost:5000/api/hotels")
       .then(res => res.json())
       .then(data => setHotels(data))

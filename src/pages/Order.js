@@ -1,8 +1,7 @@
-import React,{useState,useEffect} from "react";
+import {useState,useEffect} from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Logout from "./Logout";
-import Home from "./Home";
 
 function Order(){
     const nav=useNavigate()
@@ -15,16 +14,6 @@ function Order(){
     const [isSubmitting, setIsSubmitting] = useState(false)
     
     useEffect(()=>{
-        const checkAuth=async () => {
-            const res= await fetch("http://localhost:5000/checkAuth",{
-                credentials:"include"
-            })
-            const data=await res.json()
-            if(!data.loggedIn){
-                nav("/login")
-            }
-        }
-        checkAuth();
         const storeditem=localStorage.getItem("arr")
         if(storeditem){
             setorder(JSON.parse(storeditem))
@@ -55,44 +44,62 @@ function Order(){
             return
         }
 
-        try {
-            const orderData = {
-                location: formData.address,
-                phoneNo: formData.phoneNo,
-                payment: formData.payment,
-                items: order,
-                total: total
-            }
+       try {
+    const orderData = {
+        location: formData.address,
+        phoneNo: formData.phoneNo,
+        payment: formData.payment,
+        items: order,
+        total: total
+    }
+    const token = localStorage.getItem("token");
 
-const response = await fetch("http://localhost:5000/api/orders/place-order", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-                body: JSON.stringify(orderData)
-            })
 
-            const data = await response.json()
+    const response = await fetch("http://localhost:5000/api/orders/place-order", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
 
-            if (response.ok) {
-                alert('Order placed successfully!')
-                localStorage.removeItem('arr')
-                setorder([])
-                setFormData({
-                    address: '',
-                    phoneNo: '',
-                    payment: ''
-                })
-            } else {
-                alert(data.message || 'Failed to place order')
-            }
-        } catch (error) {
-            console.error('Error placing order:', error)
-            alert('Error placing order. Please try again.')
-        } finally {
-            setIsSubmitting(false)
+        },
+        credentials: 'include',
+        body: JSON.stringify(orderData)
+    })
+
+    const contentType = response.headers.get('content-type');
+    console.log('Response status:', response.status, 'Content-Type:', contentType);
+    
+    let responseData;
+    
+    if (contentType && contentType.includes('application/json')) {
+        responseData = await response.json();
+    } else {
+        responseData = await response.text();
+        console.log('Non-JSON response:', responseData);
+    }
+    
+    if (response.ok) {
+        alert('Order placed successfully!');
+        localStorage.removeItem('arr');
+        setorder([]);
+        setFormData({
+            address: '',
+            phoneNo: '',
+            payment: ''
+        });
+    } else {
+        if (typeof responseData === 'object' && responseData.message) {
+            alert(responseData.message);
+        } else {
+            alert(`Server error: ${response.status} ${response.statusText}`);
         }
+    }
+} catch (error) {
+    console.error('Error placing order:', error)
+    alert('Error placing order. Please try again.')
+} finally {
+    setIsSubmitting(false)
+}
     }
 
     const total = order.reduce((sum,item)=>sum+item.total,0)
